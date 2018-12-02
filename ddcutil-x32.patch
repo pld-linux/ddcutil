@@ -35,7 +35,7 @@ index 71043629..d3a0336c 100644
     g_ptr_array_add(vals, strdup(buf));
  
 -   snprintf(buf, bufsz, "TIMESTAMP_MILLIS %ld", time_millis);
-+   snprintf(buf, bufsz, "TIMESTAMP_MILLIS %jd", time_millis);
++   snprintf(buf, bufsz, "TIMESTAMP_MILLIS %jd", (intmax_t) time_millis);
     g_ptr_array_add(vals, strdup(buf));
  }
  
