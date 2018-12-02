@@ -1,0 +1,44 @@
+From e98181066b5a6986c9bfc65759077e28d0defebe Mon Sep 17 00:00:00 2001
+From: Jan Palus <atler@pld-linux.org>
+Date: Tue, 27 Nov 2018 13:26:30 +0100
+Subject: [PATCH] ddc_dumpload.c: portable format string for time_t (fixes
+ build on x32)
+
+Signed-off-by: Jan Palus <atler@pld-linux.org>
+---
+ configure.ac           | 5 +++++
+ src/ddc/ddc_dumpload.c | 2 +-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 082e85fc..c9911f87 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -127,6 +127,11 @@ dnl warning: warning: compiling 'base/common.c' in subdir requires 'AM_PROG_CC_C
+ 
+ dnl needed for OBS
+ AC_PROG_CC_STDC
++AC_PROG_CC_C99
++
++if test "x$ac_cv_prog_cc_c99" = xno; then
++  AC_MSG_ERROR([Building ddcutil requires C99 enabled compiler])
++fi
+ 
+ dnl AC_PROG_LIBTOOL, AM_PROG_LIBTOOL are deprecated names for older versions of LT_INIT
+ dnl adds support for --enable/disable -static/shared, -with/without-pic configure flags
+diff --git a/src/ddc/ddc_dumpload.c b/src/ddc/ddc_dumpload.c
+index 71043629..d3a0336c 100644
+--- a/src/ddc/ddc_dumpload.c
++++ b/src/ddc/ddc_dumpload.c
+@@ -628,7 +628,7 @@ collect_machine_readable_timestamp(time_t time_millis, GPtrArray* vals) {
+    snprintf(buf, bufsz, "TIMESTAMP_TEXT %s", timestamp_buf );
+    g_ptr_array_add(vals, strdup(buf));
+ 
+-   snprintf(buf, bufsz, "TIMESTAMP_MILLIS %ld", time_millis);
++   snprintf(buf, bufsz, "TIMESTAMP_MILLIS %jd", time_millis);
+    g_ptr_array_add(vals, strdup(buf));
+ }
+ 
+-- 
+2.19.2
+
