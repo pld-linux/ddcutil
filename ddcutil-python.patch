@@ -1,0 +1,22 @@
+--- ddcutil-0.9.4/src/cython/Makefile.am.orig	2018-12-25 18:04:45.000000000 +0100
++++ ddcutil-0.9.4/src/cython/Makefile.am	2019-01-05 20:08:06.616448626 +0100
+@@ -27,8 +27,7 @@
+ 
+ # Global and order-independent shared library and program linker config flags and options 
+ cyddc2_la_LDFLAGS = 
+-cyddc2_la_LDFLAGS += -module -shared -export_dynamic -static
+-cyddc2_la_LDFLAGS += version_info '@LT_CURRENT@:@LT_REVISION@:@LT_AGE@'
++cyddc2_la_LDFLAGS += -module -shared -export_dynamic -avoid-version
+ 
+ # Link in the core library
+ cyddc2_la_LIBADD = \
+@@ -60,8 +59,7 @@
+ # -avoid-version   avoid versioning if possible (any effect on Linux?)
+ # -version-info
+ cyddc3_la_LDFLAGS = 
+-cyddc3_la_LDFLAGS += -module -shared -export_dynamic -static
+-cyddc3_la_LDFLAGS += version_info '@LT_CURRENT@:@LT_REVISION@:@LT_AGE@'
++cyddc3_la_LDFLAGS += -module -shared -export_dynamic -avoid-version
+ 
+ # Link in the core library
+ cyddc3_la_LIBADD = \
