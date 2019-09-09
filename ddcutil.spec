@@ -10,7 +10,7 @@ Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 #Source0Download: https://github.com/rockowitz/ddcutil/releases
-#TODO: use release tarballs: https://github.com/rockowitz/ddcutil/releases/download/v%{version}/%{name}-%{version}.tar.gz
+#TODO: use named tarballs: https://github.com/rockowitz/ddcutil/archive/v%{version}/%{name}-%{version}.tar.gz
 Source0:	https://github.com/rockowitz/ddcutil/archive/v%{version}.tar.gz
 # Source0-md5:	427c956956ac8c9afdc8e18c76a8e3b0
 Patch0:		%{name}-python.patch
