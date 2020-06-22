@@ -1,19 +1,14 @@
-#
-# Conditional build:
-%bcond_without	cython	# Python extension based on Cython
-
 Summary:	Query and change Linux monitor settings using DDC/CI and USB
 Summary(pl.UTF-8):	Odczyt i zmiana ustawień monitora spod Linuksa przy użyciu DDC/CI i USB
 Name:		ddcutil
-Version:	0.9.8
+Version:	0.9.9
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 #Source0Download: https://github.com/rockowitz/ddcutil/releases
 #TODO: use named tarballs: https://github.com/rockowitz/ddcutil/archive/v%{version}/%{name}-%{version}.tar.gz
 Source0:	https://github.com/rockowitz/ddcutil/archive/v%{version}.tar.gz
-# Source0-md5:	77b5964fd6b3a220d89140c6d02b4965
-Patch0:		%{name}-python.patch
+# Source0-md5:	e11ea284f8dd950459657acdecf08476
 URL:		http://www.ddcutil.com/
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.11
@@ -22,17 +17,13 @@ BuildRequires:	libdrm-devel >= 2.4.67
 BuildRequires:	libtool >= 2:2
 BuildRequires:	libusb-devel >= 1.0.15
 BuildRequires:	pkgconfig
-%if %{with cython}
-BuildRequires:	python-Cython
-BuildRequires:	python-devel >= 1:2.6
-BuildRequires:	python3-Cython
-BuildRequires:	python3-devel >= 1:3.2
-%endif
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXrandr-devel
 BuildRequires:	zlib-devel
 Requires:	libdrm >= 2.4.67
 Requires:	libusb >= 1.0.15
+Obsoletes:	python-cyddc < 0.9.9
+Obsoletes:	python3-cyddc < 0.9.9
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -82,33 +73,8 @@ ddcutil header files.
 %description devel -l pl.UTF-8
 Pliki nagłówkowe ddcutil.
 
-%package -n python-cyddc
-Summary:	Python 2 interface for ddcutil library
-Summary(pl.UTF-8):	Interfejs Pythona 2 do biblioteki ddcutil
-Group:		Libraries/Python
-Requires:	%{name} = %{version}-%{release}
-
-%description -n python-cyddc
-Python 2 (Cython based) interface for ddcutil library.
-
-%description -n python-cyddc -l pl.UTF-8
-Interfejs Pythona 2 do biblioteki ddcutil, oparty na Cythonie.
-
-%package -n python3-cyddc
-Summary:	Python 3 interface for ddcutil library
-Summary(pl.UTF-8):	Interfejs Pythona 3 do biblioteki ddcutil
-Group:		Libraries/Python
-Requires:	%{name} = %{version}-%{release}
-
-%description -n python3-cyddc
-Python 3 (Cython based) interface for ddcutil library.
-
-%description -n python3-cyddc -l pl.UTF-8
-Interfejs Pythona 3 do biblioteki ddcutil, oparty na Cythonie.
-
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -119,7 +85,6 @@ Interfejs Pythona 3 do biblioteki ddcutil, oparty na Cythonie.
 # no --enable-gobject-api: "GObject implementation has been mothballed. TODO: delete or comment out this section"
 %configure \
 	--disable-silent-rules \
-	%{?with_cython:--enable-cython} \
 	--enable-drm \
 	--enable-lib \
 	--enable-usb \
@@ -134,18 +99,11 @@ rm -rf $RPM_BUILD_ROOT
 	resfiles=
 
 # distribute "resfiles" over destinations
-install -d $RPM_BUILD_ROOT%{_datadir}/cmake/Modules \
-	$RPM_BUILD_ROOT/etc/{X11/xorg.conf.d,udev/rules.d}
-cp -p data/usr/share/cmake/Modules/FindDDCUtil.cmake $RPM_BUILD_ROOT%{_datadir}/cmake/Modules
+install -d $RPM_BUILD_ROOT/etc/{X11/xorg.conf.d,udev/rules.d}
 # need customization if ever used
 #cp -p data/etc/udev/rules.d/*.rules $RPM_BUILD_ROOT/etc/udev/rules.d
 # xorg-driver-* package?
 #cp -p data/etc/X11/xorg.conf.d/*.conf $RPM_BUILD_ROOT/etc/X11/xorg.conf.d
-
-%if %{with cython}
-%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/*.la
-%{__rm} $RPM_BUILD_ROOT%{py3_sitedir}/*.la
-%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -158,7 +116,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS NEWS.md README.md data/etc/udev/rules.d/*.rules data/etc/X11/xorg.conf.d/*.conf
 %attr(755,root,root) %{_bindir}/ddcutil
 %attr(755,root,root) %{_libdir}/libddcutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libddcutil.so.2
+%attr(755,root,root) %ghost %{_libdir}/libddcutil.so.3
 %{_mandir}/man1/ddcutil.1*
 
 %files devel
@@ -166,14 +124,4 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libddcutil.so
 %{_includedir}/ddcutil*.h
 %{_pkgconfigdir}/ddcutil.pc
-%{_datadir}/cmake/Modules/FindDDCUtil.cmake
-
-%if %{with cython}
-%files -n python-cyddc
-%defattr(644,root,root,755)
-%attr(755,root,root) %{py_sitedir}/cyddc2.so
-
-%files -n python3-cyddc
-%defattr(644,root,root,755)
-%attr(755,root,root) %{py3_sitedir}/cyddc3.so
-%endif
+%{_libdir}/cmake/ddcutil/FindDDCUtil.cmake
