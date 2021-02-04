@@ -1,22 +1,23 @@
 Summary:	Query and change Linux monitor settings using DDC/CI and USB
 Summary(pl.UTF-8):	Odczyt i zmiana ustawień monitora spod Linuksa przy użyciu DDC/CI i USB
 Name:		ddcutil
-Version:	0.9.9
-Release:	2
+Version:	1.0.0
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 #Source0Download: https://github.com/rockowitz/ddcutil/releases
-#TODO: use named tarballs: https://github.com/rockowitz/ddcutil/archive/v%{version}/%{name}-%{version}.tar.gz
-Source0:	https://github.com/rockowitz/ddcutil/archive/v%{version}.tar.gz
-# Source0-md5:	e11ea284f8dd950459657acdecf08476
+Source0:	https://github.com/rockowitz/ddcutil/archive/v%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	8e5537a48f831e2c12a1bf6536222255
 URL:		http://www.ddcutil.com/
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.11
 BuildRequires:	glib2-devel >= 1:2.32
+BuildRequires:	gobject-introspection-devel >= 1.30.0
 BuildRequires:	libdrm-devel >= 2.4.67
 BuildRequires:	libtool >= 2:2
 BuildRequires:	libusb-devel >= 1.0.15
 BuildRequires:	pkgconfig
+BuildRequires:	udev-devel
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXrandr-devel
 BuildRequires:	zlib-devel
@@ -116,7 +117,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS NEWS.md README.md data/etc/udev/rules.d/*.rules data/etc/X11/xorg.conf.d/*.conf
 %attr(755,root,root) %{_bindir}/ddcutil
 %attr(755,root,root) %{_libdir}/libddcutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libddcutil.so.3
+%attr(755,root,root) %ghost %{_libdir}/libddcutil.so.4
 %{_mandir}/man1/ddcutil.1*
 
 %files devel
