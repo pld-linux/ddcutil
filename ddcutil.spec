@@ -1,17 +1,17 @@
 Summary:	Query and change Linux monitor settings using DDC/CI and USB
 Summary(pl.UTF-8):	Odczyt i zmiana ustawień monitora spod Linuksa przy użyciu DDC/CI i USB
 Name:		ddcutil
-Version:	1.2.2
+Version:	1.3.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 #Source0Download: https://github.com/rockowitz/ddcutil/releases
 Source0:	https://github.com/rockowitz/ddcutil/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	631eedef481af73207f95cdd258ac071
+# Source0-md5:	eee7b69263917992bd80340c318ddec9
 URL:		http://www.ddcutil.com/
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.13
-BuildRequires:	glib2-devel >= 1:2.32
+BuildRequires:	glib2-devel >= 1:2.40
 BuildRequires:	kmod-devel
 BuildRequires:	libdrm-devel >= 2.4.67
 BuildRequires:	libi2c-devel
@@ -65,7 +65,7 @@ Summary:	ddcutil header files
 Summary(pl.UTF-8):	Pliki nagłówkowe ddcutil
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.32
+Requires:	glib2-devel >= 1:2.40
 Requires:	xorg-lib-libX11-devel
 Requires:	xorg-lib-libXrandr-devel
 
@@ -84,7 +84,6 @@ Pliki nagłówkowe ddcutil.
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-# no --enable-gobject-api: "GObject implementation has been mothballed. TODO: delete or comment out this section"
 %configure \
 	--disable-silent-rules \
 	--enable-drm \
