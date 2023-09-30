@@ -1,18 +1,18 @@
 Summary:	Query and change Linux monitor settings using DDC/CI and USB
 Summary(pl.UTF-8):	Odczyt i zmiana ustawień monitora spod Linuksa przy użyciu DDC/CI i USB
 Name:		ddcutil
-Version:	1.4.1
+Version:	2.0.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 #Source0Download: https://github.com/rockowitz/ddcutil/releases
 Source0:	https://github.com/rockowitz/ddcutil/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	a011e615c050e76a6fb9ce6b2bbf1d2a
+# Source0-md5:	01808ec2b10a8997cf91d0b77c2d0ff3
 URL:		http://www.ddcutil.com/
 BuildRequires:	autoconf >= 2.69
-BuildRequires:	automake >= 1:1.13
+BuildRequires:	automake >= 1:1.14
 BuildRequires:	glib2-devel >= 1:2.40
-BuildRequires:	kmod-devel
+BuildRequires:	jansson-devel >= 2.0
 BuildRequires:	libdrm-devel >= 2.4.67
 BuildRequires:	libi2c-devel
 BuildRequires:	libtool >= 2:2
@@ -20,6 +20,7 @@ BuildRequires:	libusb-devel >= 1.0.15
 BuildRequires:	pkgconfig
 BuildRequires:	udev-devel
 BuildRequires:	xorg-lib-libX11-devel
+BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXrandr-devel
 BuildRequires:	zlib-devel
 Requires:	libdrm >= 2.4.67
@@ -65,9 +66,6 @@ Summary:	ddcutil header files
 Summary(pl.UTF-8):	Pliki nagłówkowe ddcutil
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	glib2-devel >= 1:2.40
-Requires:	xorg-lib-libX11-devel
-Requires:	xorg-lib-libXrandr-devel
 
 %description devel
 ddcutil header files.
@@ -118,8 +116,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS NEWS.md README.md data/etc/udev/rules.d/*.rules data/etc/X11/xorg.conf.d/*.conf
 %attr(755,root,root) %{_bindir}/ddcutil
 %attr(755,root,root) %{_libdir}/libddcutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libddcutil.so.4
-/lib/udev/rules.d/60-ddcutil.rules
+%attr(755,root,root) %ghost %{_libdir}/libddcutil.so.5
+/lib/udev/rules.d/60-ddcutil-i2c.rules
+/lib/udev/rules.d/60-ddcutil-usb.rules
+%{_prefix}/lib/modules-load.d/ddcutil.conf
 %{_mandir}/man1/ddcutil.1*
 
 %files devel
