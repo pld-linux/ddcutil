@@ -1,13 +1,13 @@
 Summary:	Query and change Linux monitor settings using DDC/CI and USB
 Summary(pl.UTF-8):	Odczyt i zmiana ustawień monitora spod Linuksa przy użyciu DDC/CI i USB
 Name:		ddcutil
-Version:	2.1.0
+Version:	2.1.2
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 #Source0Download: https://github.com/rockowitz/ddcutil/releases
 Source0:	https://github.com/rockowitz/ddcutil/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	37cf819bfa9178b3fa3e89d96f288d74
+# Source0-md5:	0a86ce38052cc926617ed173981db3fc
 URL:		http://www.ddcutil.com/
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.14
