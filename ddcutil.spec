@@ -1,13 +1,13 @@
 Summary:	Query and change Linux monitor settings using DDC/CI and USB
 Summary(pl.UTF-8):	Odczyt i zmiana ustawień monitora spod Linuksa przy użyciu DDC/CI i USB
 Name:		ddcutil
-Version:	2.1.4
+Version:	2.2.0
 Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 #Source0Download: https://github.com/rockowitz/ddcutil/releases
 Source0:	https://github.com/rockowitz/ddcutil/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	1865d840a113aa763f0f60dff67b3a95
+# Source0-md5:	7cd6c3cf17f6777912a6683ac9b4c7a4
 URL:		http://www.ddcutil.com/
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.14
@@ -95,8 +95,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	resfiles= \
 	rulesdir=/lib/udev/rules.d
+
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/ddcutil/data/{nvidia-i2c.conf,60-ddcutil-i2c.rules,60-ddcutil-usb.rules,90-nvidia-i2c.conf}
 
 # distribute "resfiles" over destinations
 install -d $RPM_BUILD_ROOT/etc/{X11/xorg.conf.d,udev/rules.d}
@@ -118,7 +119,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libddcutil.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libddcutil.so.5
 /lib/udev/rules.d/60-ddcutil-i2c.rules
-/lib/udev/rules.d/60-ddcutil-usb.rules
 %{_prefix}/lib/modules-load.d/ddcutil.conf
 %{_mandir}/man1/ddcutil.1*
 
