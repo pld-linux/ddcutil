@@ -18,11 +18,13 @@ BuildRequires:	libi2c-devel
 BuildRequires:	libtool >= 2:2
 BuildRequires:	libusb-devel >= 1.0.15
 BuildRequires:	pkgconfig
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	udev-devel
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXrandr-devel
 BuildRequires:	zlib-devel
+Requires:	%{name}-common = %{version}-%{release}
 Requires:	libdrm >= 2.4.67
 Requires:	libusb >= 1.0.15
 Obsoletes:	python-cyddc < 0.9.9
@@ -63,11 +65,36 @@ kolorów monitora, np. współczynnika czerwieni. ddcutil pozwala na
 zapisanie ustawień związanych z kolorami w czasie kalibracji monitora,
 a następnie odtwarzanie ich przy aplikowaniu kalibracji.
 
+%package common
+Summary:	Common ddcutil files
+Summary(pl.UTF-8):	Pliki wspólne ddcutil
+Group:		Applications
+Conflicts:	ddcutil < 2.2.3
+BuildArch:	noarch
+
+%description common
+Common ddcutil files.
+
+%description common -l pl.UTF-8
+Pliki wspólne ddcutil.
+
+%package libs
+Summary:	ddcutil library
+Summary(pl.UTF-8):	Biblioteka ddcutil
+Group:		Libraries
+Requires:	%{name}-common = %{version}-%{release}
+
+%description libs
+ddcutil library.
+
+%description libs -l pl.UTF-8
+Biblioteka cddcutil.
+
 %package devel
 Summary:	ddcutil header files
 Summary(pl.UTF-8):	Pliki nagłówkowe ddcutil
 Group:		X11/Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
 
 %description devel
 ddcutil header files.
@@ -111,18 +138,24 @@ install -d $RPM_BUILD_ROOT/etc/{X11/xorg.conf.d,udev/rules.d}
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post   -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post   libs -p /sbin/ldconfig
+%postun libs -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS NEWS.md README.md data/etc/udev/rules.d/*.rules data/etc/X11/xorg.conf.d/*.conf
 %attr(755,root,root) %{_bindir}/ddcutil
-%attr(755,root,root) %{_libdir}/libddcutil.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libddcutil.so.5
+%{_mandir}/man1/ddcutil.1*
+
+%files common
+%defattr(644,root,root,755)
 /lib/udev/rules.d/60-ddcutil-i2c.rules
 %{_prefix}/lib/modules-load.d/ddcutil.conf
-%{_mandir}/man1/ddcutil.1*
+
+%files libs
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libddcutil.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libddcutil.so.5
 
 %files devel
 %defattr(644,root,root,755)
